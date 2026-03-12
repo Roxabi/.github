@@ -1,4 +1,5 @@
 <div align="center">
+  <img src="./banner.gif" alt="Roxabi banner" width="100%" />
   <h1>Roxabi</h1>
   <p><strong>AI-native tools for builders who move fast.</strong></p>
   <p>
