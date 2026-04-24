@@ -1,0 +1,77 @@
+# Reusable workflow: build and push a container image to GHCR.
+# Callers pin to the floating v1 branch:
+#   uses: Roxabi/.github/.github/workflows/publish-container.yml@v1
+#
+# release_please_component is accepted for caller convention parity and future
+# extensibility (e.g. composing the default image_name). It is not consumed
+# in the workflow body in this initial version.
+
+on:
+  workflow_call:
+    inputs:
+      image_name:
+        description: "Full registry path, e.g. ghcr.io/roxabi/lyra"
+        required: true
+        type: string
+      release_please_component:
+        description: "Release-please component name, e.g. lyra (tag pattern: <component>/v*)"
+        required: true
+        type: string
+      dockerfile_path:
+        description: "Path to the Dockerfile"
+        required: false
+        type: string
+        default: "./Dockerfile"
+      build_context:
+        description: "Docker build context path"
+        required: false
+        type: string
+        default: "."
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ inputs.image_name }}
+          tags: |
+            type=raw,value=staging,enable=${{ github.ref == 'refs/heads/staging' }}
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}
+            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/') }}
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.version=${{ github.ref_name }}
+            org.opencontainers.image.created=${{ github.event.repository.updated_at }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ inputs.build_context }}
+          file: ${{ inputs.dockerfile_path }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
