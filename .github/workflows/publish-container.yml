@@ -83,6 +83,7 @@ jobs:
           push: true
           tags: ${{ steps.meta-staging.outputs.tags }}
           labels: ${{ steps.meta-staging.outputs.labels }}
+          outputs: type=image,oci-mediatypes=false
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -110,5 +111,6 @@ jobs:
           push: true
           tags: ${{ steps.meta-tag.outputs.tags }}
           labels: ${{ steps.meta-tag.outputs.labels }}
+          outputs: type=image,oci-mediatypes=false
           cache-from: type=gha
           cache-to: type=gha,mode=max
