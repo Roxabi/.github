@@ -1,69 +1,53 @@
 <div align="center">
-  <img src="./banner.gif" alt="Roxabi — AI-native tools for builders who move fast" width="100%" />
+  <img src="./banner.gif" alt="Roxabi — an agent & worker factory and the open-source tools that plug into it" width="100%" />
   <h1>Roxabi</h1>
-  <p><strong>Local-first AI tools for builders who ship fast.</strong></p>
+  <p><strong>An agent &amp; worker factory — and the open-source tools that plug into it.</strong></p>
   <p>
-    Everything runs on your hardware. No cloud lock-in, no vendor dependencies —<br/>
-    just CLI tools, open APIs, and infrastructure you control.
+    Tools plug into the factory over NATS, CLI, skills, or API.<br/>
+    Self-hostable, AGPL-3.0, nothing calls home — fork the pieces you need.
   </p>
 </div>
 
 ---
 
-### 🚀 Flagship
+### 🏭 The factory
 
 | Project | Description | |
 |:--------|:------------|:-|
-| **[roxabi-plugins](https://github.com/Roxabi/roxabi-plugins)** | Claude Code plugins — battle-tested skills and agents for dev lifecycle, code review, web intel, and more | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-plugins?style=flat-square&color=58A6FF&labelColor=1a1b27) |
-| **[roxabi-boilerplate](https://github.com/Roxabi/roxabi-boilerplate)** | SaaS boilerplate — Bun + TurboRepo, TanStack Start, NestJS, auth, multi-tenancy, integrated AI agent team | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-boilerplate?style=flat-square&color=58A6FF&labelColor=1a1b27) |
-| **[lyra](https://github.com/Roxabi/lyra)** | Personal AI agent engine — hub-and-spoke architecture, asyncio, multi-channel (Telegram + Discord), runs 24/7 on your hardware | ![Stars](https://img.shields.io/github/stars/Roxabi/lyra?style=flat-square&color=58A6FF&labelColor=1a1b27) |
-| **[roxabi-forge](https://github.com/Roxabi/roxabi-forge)** | HTML visual artifacts for Claude Code — diagrams, galleries, guides, epics | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-forge?style=flat-square&color=58A6FF&labelColor=1a1b27) |
+| **[roxabi-factory](https://github.com/Roxabi/roxabi-factory)** | Agent &amp; worker factory — self-hostable hub; tools plug in over NATS, CLI, skills, or API. *In construction.* | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-factory?style=flat-square&color=58A6FF&labelColor=1a1b27) |
 
-### 🔧 CLI Tools
+### 🔌 Tools that plug in
 
 | Project | Description | |
 |:--------|:------------|:-|
-| **[voiceCLI](https://github.com/Roxabi/voiceCLI)** | Unified TTS/STT — Qwen3-TTS, Chatterbox, Whisper backends, swap without changing your workflow | ![Stars](https://img.shields.io/github/stars/Roxabi/voiceCLI?style=flat-square&color=58A6FF&labelColor=1a1b27) |
-| **[imageCLI](https://github.com/Roxabi/imageCLI)** | Local image generation — FLUX.2-klein, FLUX.1-dev, SD3.5, no cloud API required | ![Stars](https://img.shields.io/github/stars/Roxabi/imageCLI?style=flat-square&color=58A6FF&labelColor=1a1b27) |
-| **[roxabi-vault](https://github.com/Roxabi/roxabi-vault)** | Persistent structured memory — SQLite + FTS5 full-text search, namespace isolation, sync + async APIs | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-vault?style=flat-square&color=58A6FF&labelColor=1a1b27) |
-| **[voxtral-tts](https://github.com/Roxabi/voxtral-tts)** | Fast int4 quantized inference for Voxtral-4B-TTS — 57-62 fps, 3.7 GB VRAM, near-lossless quality | ![Stars](https://img.shields.io/github/stars/Roxabi/voxtral-tts?style=flat-square&color=58A6FF&labelColor=1a1b27) |
+| **[voiceCLI](https://github.com/Roxabi/voiceCLI)** | Unified TTS/STT — Qwen3-TTS, Chatterbox, Whisper backends. Plugs in over NATS. | ![Stars](https://img.shields.io/github/stars/Roxabi/voiceCLI?style=flat-square&color=58A6FF&labelColor=1a1b27) |
+| **[llmCLI](https://github.com/Roxabi/llmCLI)** | Local LLM serving — llama.cpp + TurboQuant GGUF, OpenAI-compatible HTTP. Plugs in over NATS. | ![Stars](https://img.shields.io/github/stars/Roxabi/llmCLI?style=flat-square&color=58A6FF&labelColor=1a1b27) |
+| **[imageCLI](https://github.com/Roxabi/imageCLI)** | Local image generation — FLUX.2-klein, FLUX.1-dev, SD3.5. No cloud API. | ![Stars](https://img.shields.io/github/stars/Roxabi/imageCLI?style=flat-square&color=58A6FF&labelColor=1a1b27) |
+| **[roxabi-cortex](https://github.com/Roxabi/roxabi-cortex)** | Personal exocortex — multi-source capture + living memory (lake/ETL + warehouse/graph). Successor to roxabi-vault. | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-cortex?style=flat-square&color=58A6FF&labelColor=1a1b27) |
+| **[roxabi-idna](https://github.com/Roxabi/roxabi-idna)** | Local convergence algorithm — narrows options with AI on any domain (now: local AI image selection). | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-idna?style=flat-square&color=58A6FF&labelColor=1a1b27) |
+| **[roxabi-intel](https://github.com/Roxabi/roxabi-intel)** | News monitoring — Discord channels → static HTML server. | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-intel?style=flat-square&color=58A6FF&labelColor=1a1b27) |
+| **[roxabi-postiz](https://github.com/Roxabi/roxabi-postiz)** | Containerized fork of Postiz (social scheduling) — to plug into the factory. | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-postiz?style=flat-square&color=58A6FF&labelColor=1a1b27) |
 
-### ⚙️ Infrastructure & Ecosystem
+### 🛠️ Build &amp; ship
 
 | Project | Description | |
 |:--------|:------------|:-|
-| **[roxabi-intel](https://github.com/Roxabi/roxabi-intel)** | Discord links digest service — frontmatter MDs + dynamic gallery | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-intel?style=flat-square&color=58A6FF&labelColor=1a1b27) |
-| **[roxabi-dashboard](https://github.com/Roxabi/roxabi-dashboard)** | Real-time GitHub project dashboard — NestJS + SSE live updates, GitHub OAuth, workspace config | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-dashboard?style=flat-square&color=58A6FF&labelColor=1a1b27) |
-| **[roxabi-site](https://github.com/Roxabi/roxabi-site)** | Roxabi website — roxabi.dev | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-site?style=flat-square&color=58A6FF&labelColor=1a1b27) |
-| **[roxabi-talks](https://github.com/Roxabi/roxabi-talks)** | Tech talk slides — TanStack Start app with section-based navigation, deployed on Vercel | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-talks?style=flat-square&color=58A6FF&labelColor=1a1b27) |
-| **[roxabi-docs](https://github.com/Roxabi/roxabi-docs)** | Documentation site — Fumadocs + Next.js | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-docs?style=flat-square&color=58A6FF&labelColor=1a1b27) |
+| **[roxabi-plugins](https://github.com/Roxabi/roxabi-plugins)** | Claude Code plugins — skills &amp; agents for dev lifecycle, code review, web intel. | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-plugins?style=flat-square&color=58A6FF&labelColor=1a1b27) |
+| **[roxabi-boilerplate](https://github.com/Roxabi/roxabi-boilerplate)** | SaaS boilerplate — Bun + TurboRepo, TanStack Start, NestJS, auth, multi-tenancy. | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-boilerplate?style=flat-square&color=58A6FF&labelColor=1a1b27) |
+| **[roxabi-forge](https://github.com/Roxabi/roxabi-forge)** | HTML visual artifacts for Claude Code — diagrams, galleries, guides, epics. | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-forge?style=flat-square&color=58A6FF&labelColor=1a1b27) |
 
----
+### ⚙️ Infrastructure
 
-### 🛠 Stack
-
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Bun](https://img.shields.io/badge/Bun-000000?style=flat-square&logo=bun&logoColor=white)
-![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=flat-square&logo=nestjs&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
-![TanStack](https://img.shields.io/badge/TanStack-FF4154?style=flat-square&logo=reactquery&logoColor=white)
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
-![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white)
-![Claude API](https://img.shields.io/badge/Claude_API-D97757?style=flat-square&logo=anthropic&logoColor=white)
-![FFmpeg](https://img.shields.io/badge/FFmpeg-007808?style=flat-square&logo=ffmpeg&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
-![NVIDIA](https://img.shields.io/badge/NVIDIA_GPU-76B900?style=flat-square&logo=nvidia&logoColor=white)
+| Project | Description | |
+|:--------|:------------|:-|
+| **[roxabi-container](https://github.com/Roxabi/roxabi-container)** | Shared CUDA + PyTorch base image for Roxabi ML projects. | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-container?style=flat-square&color=58A6FF&labelColor=1a1b27) |
+| **[roxabi-live](https://github.com/Roxabi/roxabi-live)** | Org dashboard — project status, metrics, activity (NestJS + SSE). | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-live?style=flat-square&color=58A6FF&labelColor=1a1b27) |
+| **[roxabi-site](https://github.com/Roxabi/roxabi-site)** | roxabi.dev — static bilingual site, zero-dependency build. | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-site?style=flat-square&color=58A6FF&labelColor=1a1b27) |
+| **[roxabi-docs](https://github.com/Roxabi/roxabi-docs)** | Documentation — Fumadocs + Next.js. | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-docs?style=flat-square&color=58A6FF&labelColor=1a1b27) |
+| **[roxabi-talks](https://github.com/Roxabi/roxabi-talks)** | Tech talk slides — TanStack Start. | ![Stars](https://img.shields.io/github/stars/Roxabi/roxabi-talks?style=flat-square&color=58A6FF&labelColor=1a1b27) |
 
 ---
 
 <div align="center">
-  <sub>
-    Built in 🇫🇷 &nbsp;·&nbsp;
-    <a href="https://github.com/Roxabi/roxabi-docs">Docs</a> &nbsp;·&nbsp;
-    <a href="https://github.com/Roxabi/roxabi-plugins">Plugins</a> &nbsp;·&nbsp;
-    <a href="https://github.com/orgs/Roxabi/projects/11">We build in public — see what's next →</a>
-    <br/><br/>
-    Want to contribute? See <code>CONTRIBUTING.md</code> in each repo — PRs welcome.
-  </sub>
+  <sub>AGPL-3.0 · self-hostable · no telemetry · <a href="https://github.com/Roxabi/.github/blob/main/CONTRIBUTING.md">Contributing + CLA</a></sub>
 </div>
