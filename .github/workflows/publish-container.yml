@@ -1,6 +1,6 @@
 # Reusable workflow: build and push a container image to GHCR.
-# Callers pin to the floating v1 branch:
-#   uses: Roxabi/.github/.github/workflows/publish-container.yml@v1
+# Callers pin to the staging branch (beta fleet — no v1 infra branch):
+#   uses: Roxabi/.github/.github/workflows/publish-container.yml@staging
 #
 # release_please_component is accepted for caller convention parity and future
 # extensibility (e.g. composing the default image_name). It is not consumed
