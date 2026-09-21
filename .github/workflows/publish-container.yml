@@ -5,6 +5,9 @@
 # release_please_component is accepted for caller convention parity and future
 # extensibility (e.g. composing the default image_name). It is not consumed
 # in the workflow body in this initial version.
+#
+# Optional secret git_token is forwarded as a BuildKit secret (id=git_token),
+# never as a build-arg. Callers that omit it are unchanged.
 
 on:
   workflow_call:
@@ -28,6 +31,10 @@ on:
         required: false
         type: string
         default: "."
+    secrets:
+      git_token:
+        description: "Optional token for private git dependencies. Exposed to the build only as BuildKit secret id=git_token."
+        required: false
 
 permissions:
   contents: read
@@ -83,7 +90,14 @@ jobs:
           push: true
           tags: ${{ steps.meta-staging.outputs.tags }}
           labels: ${{ steps.meta-staging.outputs.labels }}
+          # oci-mediatypes=false keeps Docker schema 2 so HEALTHCHECK survives
+          # (75beac2). Provenance attestations cannot be exported with that
+          # flag (buildx, red since 2026-07-24), so disable them.
           outputs: type=image,oci-mediatypes=false
+          provenance: false
+          # Empty when the caller omits git_token: build-push-action rejects
+          # "key=" as an invalid secret, which would warn on every other caller.
+          secrets: "${{ secrets.git_token && format('git_token={0}', secrets.git_token) || '' }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -111,6 +125,9 @@ jobs:
           push: true
           tags: ${{ steps.meta-tag.outputs.tags }}
           labels: ${{ steps.meta-tag.outputs.labels }}
+          # Same media-type constraint as the staging build above.
           outputs: type=image,oci-mediatypes=false
+          provenance: false
+          secrets: "${{ secrets.git_token && format('git_token={0}', secrets.git_token) || '' }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
