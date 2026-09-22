@@ -1,10 +1,18 @@
 # Reusable workflow: build and push a container image to GHCR.
-# Callers pin to the floating v1 branch:
-#   uses: Roxabi/.github/.github/workflows/publish-container.yml@v1
+# Callers pin the immutable tag. Do not pin a branch (@main, @staging, @v1):
+# a branch pin ships every future edit to every caller with no review and no
+# rollback by reference.
+#   uses: Roxabi/.github/.github/workflows/publish-container.yml@v1.0.0
+# A fix lands as a new tag (v1.0.1, v1.1.0, …). Never move v1.0.0.
 #
 # release_please_component is accepted for caller convention parity and future
 # extensibility (e.g. composing the default image_name). It is not consumed
 # in the workflow body in this initial version.
+#
+# Private git deps: pass either secrets.git_token (a real secret, not a job
+# output — GitHub strips those) or set git_auth so this job mints an app
+# token and forwards it as BuildKit secret id=git_token. Never a build-arg.
+# Callers that omit both are unchanged.
 
 on:
   workflow_call:
@@ -28,6 +36,28 @@ on:
         required: false
         type: string
         default: "."
+      git_auth:
+        description: "Mint a GitHub App token in this job and expose it as BuildKit secret id=git_token. A caller cannot mint upstream: GitHub drops job outputs that contain secrets."
+        required: false
+        type: boolean
+        default: false
+      app_id:
+        description: "GitHub App ID. Used only when git_auth is true."
+        required: false
+        type: string
+        default: ""
+      git_auth_repositories:
+        description: "Repositories the minted token may read. Used only when git_auth is true."
+        required: false
+        type: string
+        default: ""
+    secrets:
+      git_token:
+        description: "Optional pre-minted token, exposed only as BuildKit secret id=git_token. Ignored if it arrives empty (job outputs that contain secrets are stripped by GitHub)."
+        required: false
+      app_private_key:
+        description: "GitHub App private key. Used only when git_auth is true."
+        required: false
 
 permissions:
   contents: read
@@ -49,6 +79,37 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      # Same job as the build on purpose. create-github-app-token masks its
+      # output, and the runner then refuses to export it ("Skip output
+      # 'token' since it may contain secret"), so an upstream job cannot
+      # hand the token over.
+      - name: Mint a token for private git dependencies
+        id: app
+        if: inputs.git_auth
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ inputs.app_id }}
+          private-key: ${{ secrets.app_private_key }}
+          owner: Roxabi
+          repositories: ${{ inputs.git_auth_repositories }}
+
+      - name: Stage BuildKit git token
+        id: gitauth
+        env:
+          MINTED: ${{ steps.app.outputs.token }}
+          PASSED: ${{ secrets.git_token }}
+        run: |
+          set -euo pipefail
+          token="${MINTED:-}"
+          if [ -z "$token" ]; then
+            token="${PASSED:-}"
+          fi
+          if [ -n "$token" ]; then
+            printf 'GIT_TOKEN=%s\n' "$token" >> "$GITHUB_ENV"
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Extract semver from tag
         id: strip
@@ -83,7 +144,16 @@ jobs:
           push: true
           tags: ${{ steps.meta-staging.outputs.tags }}
           labels: ${{ steps.meta-staging.outputs.labels }}
+          # oci-mediatypes=false keeps Docker schema 2 so HEALTHCHECK survives
+          # (75beac2). Provenance attestations cannot be exported with that
+          # flag (buildx, red since 2026-07-24), so disable them.
           outputs: type=image,oci-mediatypes=false
+          provenance: false
+          # secret-envs, not a build-arg: the value stays in the runner env
+          # and is mounted only for the RUN that asks for id=git_token.
+          # Omitted when neither a minted nor a passed token is present, so
+          # callers that need neither do not get an empty-secret warning.
+          secret-envs: ${{ steps.gitauth.outputs.enabled == 'true' && 'git_token=GIT_TOKEN' || '' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -111,6 +181,9 @@ jobs:
           push: true
           tags: ${{ steps.meta-tag.outputs.tags }}
           labels: ${{ steps.meta-tag.outputs.labels }}
+          # Same media-type constraint as the staging build above.
           outputs: type=image,oci-mediatypes=false
+          provenance: false
+          secret-envs: ${{ steps.gitauth.outputs.enabled == 'true' && 'git_token=GIT_TOKEN' || '' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
